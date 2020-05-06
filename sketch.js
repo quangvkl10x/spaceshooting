@@ -7,8 +7,9 @@ let dead=0;
 let shownEnemy= new Array(110).fill(false);
 let ifend=0;
 let supply_hp=new bullet();
+let bosses=new boss();
 function setup(){
-	frameRate(45);
+	frameRate(30);
 	for (let bad of enemy){
 		bad.x=Math.floor(Math.random()*1000);
 		bad.y=Math.floor(Math.random()*100);
@@ -83,7 +84,7 @@ function draw(){
 		bad.y=Math.floor(Math.random()*100);
 		bad.y=bad.y - bad.y%scl+scl;
 		bad.x=bad.x - bad.x%scl+scl;
-		if (shownEnemy[bad.y]) 
+		if (shownEnemy[bad.y] || (bad.y==bosses.y) || (bad.y==bosses.y+scl)) 
 			{
 				bad.y=Math.floor(Math.random()*100);
 				bad.y=bad.y - bad.y%scl+scl;
@@ -102,4 +103,5 @@ function draw(){
 		fill(255,0,0);
 		rect(1200-i*scl,700,scl,scl);
 	}
+	if (total_enemy%5==0) bosses.show();
 }
