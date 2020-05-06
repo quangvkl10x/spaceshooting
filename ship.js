@@ -10,13 +10,13 @@ function bullet(){
 	}
 	this.brk=true;
 	this.hurt= function(guy){
-	if ((this.x==guy.x+scl && dist(this.x,this.y,guy.x+scl,guy.y+scl)<=10) || (this.x==guy.x-scl && dist(this.x,this.y,guy.x-scl,guy.y+scl)<=10))
+	if ((this.x==guy.x+scl && dist(this.x,this.y,guy.x+scl,guy.y+scl)<=scl) || (this.x==guy.x-scl && dist(this.x,this.y,guy.x-scl,guy.y+scl)<=scl))
 		{
 			this.brk=false;
 			guy.hp--;
 			return true;
 		}
-		if (dist(this.x,this.y,guy.x,guy.y)<=10 || dist(this.x,this.y,guy.x,guy.y+scl)<=10)
+		if (dist(this.x,this.y,guy.x,guy.y)<=scl || dist(this.x,this.y,guy.x,guy.y+scl)<=scl)
 		{
 			this.brk=false;
 			guy.hp--;
@@ -62,6 +62,7 @@ function ship(){
 				if (bad.hp>0){
 						if (this.ammo[i].hurt(bad)){
 							y-=scl;
+							rect(x,y,scl,scl);
 						}
 					}
 			}
@@ -87,6 +88,64 @@ function ship(){
 		if (this.shot.brk){
 			fill(255);
 			rect(this.shot.x,this.shot.y,scl,scl);
+		}
+	}
+}
+function boss(){
+	this.x=400;
+	this.y=100;
+	this.shot=[];
+	for (let i=0;i<5;i++)
+		this.shot[i]=new bullet();
+	for (let i=0;i<this.shot.length;i++){
+				this.shot[i].x=this.x;
+				this.shot[i].y=this.y;
+				this.shot[i].brk=true;
+			}
+	console.log(this.shot,this.y);
+	this.show= function(){
+		this.d=4*scl;
+		rect(this.x,this.y,scl,scl,scl/2);
+		rect(this.x+scl,this.y-scl,scl,scl,scl/2);
+		rect(this.x-scl,this.y-scl,scl,scl,scl/2);
+		rect(this.x+scl*2,this.y-scl*2,scl,scl,scl/2);
+		rect(this.x-scl*2,this.y-scl*2,scl,scl,scl/2);
+		rect(this.x-scl,this.y-scl*3,scl,scl,scl/2);
+		rect(this.x+scl,this.y-scl*3,scl,scl,scl/2);
+		rect(this.x-scl*2,this.y-scl*4,scl,scl,scl/2);
+		rect(this.x+scl*2,this.y-scl*4,scl,scl,scl/2);
+		rect(this.x-scl*3,this.y-scl*4,scl,scl,scl/2);
+		rect(this.x+scl*3,this.y-scl*4,scl,scl,scl/2);
+		rect(this.x-scl*4,this.y-scl*5,scl,scl,scl/2);
+		rect(this.x+scl*4,this.y-scl*5,scl,scl,scl/2);
+		rect(this.x-scl*5,this.y-scl*5,scl,scl,scl/2);
+		rect(this.x+scl*5,this.y-scl*5,scl,scl,scl/2);
+		for (let i=0;i<this.shot.length;i++){
+			if (this.shot[i].y>=700){
+				this.shot[i].x=this.x;
+				this.shot[i].y=this.y;
+				if (i==this.shot.length-1) this.d=0;
+				this.shot[i].brk=true;
+			}
+			else this.shot[i].flydown();
+			this.shot[i].y-=this.d;
+			console.log(i,this.shot[i].x,this.shot[i].y);
+			this.shot[i].x = this.shot[i].x-this.d;
+			if (this.shot[i].brk)
+				if (this.shot[i].hurt(player))
+				this.shot[i].brk=false;
+			if (this.shot[i].brk)
+			rect(this.shot[i].x,this.shot[i].y,scl,scl);
+			this.shot[i].x = this.shot[i].x+this.d*2;
+			this.shot[i].brk=true;
+			if (this.shot[i].brk)
+				if (this.shot[i].hurt(player))
+				this.shot[i].brk=false;
+			if (this.shot[i].brk)
+			rect(this.shot[i].x,this.shot[i].y,scl,scl);
+			this.shot[i].x-=this.d;
+			this.shot[i].y+=this.d;
+			this.d=this.d-scl;
 		}
 	}
 }
