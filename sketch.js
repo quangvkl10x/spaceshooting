@@ -1,4 +1,4 @@
-let scl=10;
+let scl=20;
 let player=new ship();
 let enemy=[];
 enemy[0]=new ship();
